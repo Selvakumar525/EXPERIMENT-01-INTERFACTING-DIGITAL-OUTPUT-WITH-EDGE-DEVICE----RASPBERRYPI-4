@@ -1,8 +1,8 @@
 # EXPERIMENT-01-INTERFACTING-DIGITAL-OUTPUT-WITH-EDGE-DEVICE---(RASPBERRYPI-PI4)
-### NAME 
-### DEPARTMENT 
-### ROLL NO 
-### DATE OF EXPERIMENT 
+### NAME : SELVA KUMAR A
+### DEPARTMENT : CSE(IOT)
+### ROLL NO : 212222110042
+### DATE OF EXPERIMENT : 27-03-2026
 
 ### AIM
 To interface a digital output device (LED) with the Raspberry Pi 4 and control it using Python.
@@ -52,32 +52,153 @@ Connect the IR sensor GND to any GND.
 Connect the IR sensor OUT to any one GPIO. 
 
 ## PROGRAM (Python)
+## Experiment 1A
 ```
+import RPi.GPIO as GPIO
+import time
+import urllib.request
 
+# ThingSpeak details
+WRITE_API_KEY = "IARCOVMCT5RNJ5W5"
+CHANNEL_ID = 3241534
+THINGSPEAK_URL = "https://api.thingspeak.com/update"
 
- 
+# Set GPIO numbering mode
+GPIO.setmode(GPIO.BCM)
 
+# Define LED pin
+LED_PIN = 18
 
+# Set GPIO18 as output
+GPIO.setup(LED_PIN, GPIO.OUT)
 
- 
+def send_to_thingspeak(value):
+    url = f"https://api.thingspeak.com/update?api_key=IARCOVMCT5RNJ5W5&field1={value}"
+    urllib.request.urlopen(url)
+    print("Sent to ThingSpeak:", value)
+
+try:
+    while True:
+        # LED ON
+        GPIO.output(LED_PIN, GPIO.HIGH)
+        print("LED ON")
+        send_to_thingspeak(1)
+        time.sleep(15)
+
+        # LED OFF
+        GPIO.output(LED_PIN, GPIO.LOW)
+        print("LED OFF")
+        send_to_thingspeak(0)
+        time.sleep(15)
+
+except KeyboardInterrupt:
+    print("Program stopped")
+
+finally:
+    GPIO.cleanup()
+
 ````
 
+## Experiment 1B
+```
+import RPi.GPIO as GPIO
+import time
+import urllib.request
+
+# ThingSpeak details
+WRITE_API_KEY = "X839QZ0XT8UUS8KN"
+CHANNEL_ID = 3249834
+THINGSPEAK_URL = "https://api.thingspeak.com/update"
+
+
+
+# Pin setup
+SENSOR_PIN = 23   # Input from sensor
+LED_PIN = 18      # Output to LED
+
+# GPIO mode
+GPIO.setmode(GPIO.BCM)
+
+# Setup pins
+GPIO.setup(SENSOR_PIN, GPIO.IN)
+GPIO.setup(LED_PIN, GPIO.OUT)
+
+def send_to_thingspeak(value):
+    url = f"https://api.thingspeak.com/update?api_key=X839QZ0XT8UUS8KN&field1={value}"
+    urllib.request.urlopen(url)
+    print("Sent to ThingSpeak:", value)
+
+
+print("Sensor + LED system running...")
+
+try:
+    while True:
+        sensor_value = GPIO.input(SENSOR_PIN)
+
+        if sensor_value == 0:   # Many IR sensors give LOW when object detected
+            print("Object Detected! LED ON")
+            GPIO.output(LED_PIN, GPIO.HIGH)
+            send_to_thingspeak(1)
+
+            time.sleep(15)
+        else:
+            print("No Object. LED OFF")
+            GPIO.output(LED_PIN, GPIO.LOW)
+            send_to_thingspeak(0)
+
+            time.sleep(15)
+
+        time.sleep(0.1)
+
+except KeyboardInterrupt:
+    print("Stopped by user")
+
+finally:
+    GPIO.cleanup()
+
+```
+
 ### OUPUT  
-Experiment 1A
+# Experiment 1A
 
-# FIGURE -02 ADD TITILE HERE 
+## LED ON
 
-#  FIGURE -03 ADD TITILE HERE 
+![led on](https://github.com/user-attachments/assets/6dec38d9-dc05-447a-8e94-ffb39b52dd55)
 
-# FIGURE -04 ADD TITLE HERE 
+![thingspeak 1](https://github.com/user-attachments/assets/c2380f0d-c0e2-489e-9534-3edaefc907fb)
 
-Experiment 1B
+<img width="1920" height="898" alt="Screenshot (58)" src="https://github.com/user-attachments/assets/9dced7a8-511e-400f-ab5f-8127f5345dfa" />
 
-# FIGURE -05 ADD TITILE HERE 
+## LED OFF
 
-#  FIGURE -06 ADD TITILE HERE 
+![led off](https://github.com/user-attachments/assets/5da9210c-d568-40a6-a25a-ae2d42ad109e)
 
-# FIGURE -07 ADD TITLE HERE 
+![thingspeak 0](https://github.com/user-attachments/assets/35ff85cd-1ea5-4898-add2-9ca74376ca63)
+
+<img width="1920" height="884" alt="Screenshot (59)" src="https://github.com/user-attachments/assets/7370c313-a4aa-4e90-b903-5ac06d57f4e4" />
+
+
+
+# Experiment 1B
+
+## OBSTACLE DETECTED 
+![led on ir](https://github.com/user-attachments/assets/8cc8d4ed-5a97-4b21-9941-dae2d5dbd307)
+
+![Console 1](https://github.com/user-attachments/assets/b04b1cef-5da0-4642-a379-fd59d9aa2df9)
+
+<img width="1891" height="823" alt="Screenshot 2026-02-05 143015" src="https://github.com/user-attachments/assets/34f707c6-963b-48ba-bb27-c1803b75f9b3" />
+
+
+
+
+## OBSTACLE NOT DETECTED 
+
+![led off ir](https://github.com/user-attachments/assets/39418ee0-842e-462e-aa73-8c9f09fcef24)
+
+![Console 0](https://github.com/user-attachments/assets/71289b92-c860-44ff-a6d5-5bfb125fab01)
+
+
+<img width="1891" height="823" alt="Screenshot 2026-02-05 143015" src="https://github.com/user-attachments/assets/799cef44-ae67-4db9-a844-bca2ed8b361c" />
 
  
 ## RESULTS
